@@ -1,0 +1,331 @@
+
+--###############TUTORIAL#######################
+
+
+--Create a table
+CREATE TABLE my_table (
+    id INT PRIMARY KEY,
+    name VARCHAR(255),
+    surname VARCHAR(255)
+);
+
+--Insert element to table 
+INSERT INTO my_table (name, surname, id)
+VALUES ('John', 'Doe', 1001),
+       ('Jane', 'Smith', 1002);
+
+--Select
+SELECT *
+FROM ACTOR
+;
+
+SELECT FIRST_NAME
+FROM ACTOR
+; 
+
+--Where and Condition
+SELECT FIRST_NAME,ACTOR_ID
+FROM ACTOR
+WHERE ACTOR_ID <= 10 
+; 
+
+SELECT FIRST_NAME,ACTOR_ID
+FROM ACTOR
+WHERE ACTOR_ID <> 5 
+;
+
+SELECT FIRST_NAME,ACTOR_ID
+FROM ACTOR
+WHERE ACTOR_ID BETWEEN 50 AND 60
+;
+
+SELECT FIRST_NAME,ACTOR_ID
+FROM ACTOR
+WHERE ACTOR_ID BETWEEN 50 AND 60
+;
+
+--Order table
+SELECT *
+FROM ACTOR
+WHERE ACTOR_ID BETWEEN 50 AND 70
+ORDER BY FIRST_NAME 
+;
+
+SELECT *
+FROM ACTOR
+WHERE ACTOR_ID BETWEEN 50 AND 70
+ORDER BY ACTOR_ID DESC
+;
+
+SELECT *
+FROM ACTOR
+WHERE ACTOR_ID BETWEEN 50 AND 70
+ORDER BY ACTOR_ID DESC, FIRST_NAME ASC
+;
+
+--AND  OR OPERATORS
+SELECT *
+FROM FILM
+WHERE  FILM_ID < 10 AND RENTAL_DURATION > 5 AND (LENGTH = 50 OR LENGTH = 130)
+;
+
+--NOT OPERATORS
+SELECT  *
+FROM COUNTRY
+WHERE  NOT COUNTRY = 'Algeria' AND COUNTRY_ID < 10
+;
+
+--Select customers that does not start with the letter 'A':  ~ NOT BETWEEN ~ NOT IN
+SELECT *
+FROM COUNTRY
+WHERE COUNTRY NOT LIKE 'Af%'
+;
+
+--Insert into specified column
+INSERT INTO my_table(ID)
+VALUES ('4')
+;
+
+--NULL Values
+SELECT *
+FROM my_table
+WHERE NAME IS NULL
+;
+
+SELECT *
+FROM my_table
+WHERE NAME IS NOT NULL
+;
+
+--UPDATE Table
+UPDATE my_table
+SET NAME = 'ozkanAltered', SURNAME = 'condekAltered'
+WHERE ID = 3507
+;
+
+UPDATE my_table
+SET SURNAME = 'condek'
+;
+
+--DELETE Statement
+DELETE FROM my_table
+WHERE ID = '4'
+;
+
+DELETE FROM my_table;
+
+-- SQL SELECT TOP Clause
+
+SELECT TOP 3 *  
+FROM my_table
+;
+
+SELECT *
+FROM my_table
+LIMIT 3
+;
+
+SELECT *
+FROM my_table
+FETCH FIRST 3 ROWS ONLY
+;
+
+SELECT *
+FROM FILM
+WHERE FILM_ID < 10
+ORDER BY LENGTH DESC
+LIMIT 4
+;
+
+--MIN() and MAX() Functions and AS
+SELECT MIN(LENGTH) AS Smallest
+FROM FILM
+;
+
+--Coun
+SELECT COUNT(*)
+FROM my_table
+;
+
+SELECT COUNT(*)
+FROM my_table
+WHERE ID > 1
+;
+
+SELECT COUNT(DISTINCT name)
+FROM my_table
+;
+
+--SUM Function
+
+SELECT SUM(ID*10)
+FROM my_table
+;
+
+--AVG Function
+SELECT AVG(ID)
+FROM my_table
+;
+
+--LIKE Operator
+--Select all names that starts with the letter "j"
+
+SELECT * FROM my_table
+WHERE name LIKE 'J%'
+;
+
+SELECT * FROM my_table
+WHERE SURNAME LIKE 'S_i__'
+;
+
+SELECT * FROM my_table
+WHERE SURNAME NOT LIKE '%i%'
+;
+
+--Wildcard
+--   %	Represents zero or more characters
+--   _	Represents a single character
+--   []	Represents any single character within the brackets *
+--   ^	Represents any character not in the brackets *
+--   -	Represents any single character within the specified range *
+--   {}	Represents any escaped character **
+
+
+
+
+--IN OPERATOR
+--The IN operator is a shorthand for multiple OR conditions.
+
+SELECT *
+FROM my_table
+Where ID IN('1002','1004') --ID = '1002' OR ID = '1004'
+;
+
+--Between OPERATOR
+
+SELECT *
+FROM my_table
+WHERE ID BETWEEN 10 AND 20;
+
+--Aliases
+
+SELECT ID AS mytableid
+FROM my_table
+;
+--AS is also optional here
+
+SELECT NAME mynames
+FROM my_table
+;
+--different syntax
+SELECT ID,NAME +'--'+ SURNAME AS FULLNAME
+FROM my_table 
+;
+
+--JOINS
+
+--Create a new table
+CREATE TABLE my_jobtable (
+    id INT PRIMARY KEY,
+    name VARCHAR(255),
+    surname VARCHAR(255),
+    job VARCHAR(225)
+);
+
+--delete table
+
+DROP TABLE my_jobtable;
+
+--Insert element to table 
+INSERT INTO my_jobtable (id,name, surname,job)
+VALUES (1001,'Michael', 'Never','Developer'),
+       (1002,'Kimm', 'Relie','Carpenter'),
+       (1003,'Frank', 'Honest','Bartender');
+
+SELECT *
+FROM my_table;
+
+--Cross join >> just together
+SELECT * FROM my_table , my_jobtable;
+--INNER JOIN > Returns records that have matching values in both tables
+SELECT my_table.name AS comes_from_mytable , my_jobtable.surname AS comes_from_myjobtable, my_table.id AS commonIds
+FROM my_table
+INNER JOIN my_jobtable ON my_table.id=my_jobtable.id
+;
+
+--LEFT (OUTER) JOIN:Returns all records from the left table, and the matched records from the right table
+SELECT my_table.name AS comes_from_mytable , my_jobtable.surname AS comes_from_myjobtable, my_table.id AS commonIds
+FROM my_table
+LEFT JOIN my_jobtable ON my_jobtable.id=my_table.id
+;
+--RIGHT (OUTER) JOIN: Returns all records from the right table, and the matched records from the left table
+SELECT my_table.name AS comes_from_mytable , my_jobtable.surname AS comes_from_myjobtable, my_table.id AS commonIds
+FROM my_table
+RIGHT JOIN my_jobtable ON my_jobtable.id=my_table.id
+--FULL (OUTER) JOIN: Returns all records when there is a match in either left or right table
+SELECT my_table.name,my_jobtable.surname 
+FROM my_table
+FULL OUTER JOIN my_jobtable ON my_jobtable.id=my_table.id
+;
+ 
+--UNION
+
+SELECT NAME FROM my_table AS fromMyTAble
+UNION
+SELECT SURNAME FROM my_jobtable AS fromMyJobTable
+;
+
+--GROUP BY
+
+SELECT COUNT(id),name
+FROM my_table
+GROUP BY name
+;
+
+ --The EXISTS operator is used to test for the existence of any record in a subquery.
+ 
+ SELECT name
+ FROM my_table
+ WHERE EXISTS (SELECT job from my_jobtable)
+ ;
+ 
+ --ANY ALL
+ SELECT ALL name
+FROM my_table
+WHERE id = ALL(
+SELECT id
+FROM my_jobtable
+where id<1000)
+;
+
+--SELECT INTO Statement
+--Copy all columns into a new table:
+
+SELECT id, name, salary
+INTO high_paid_employees
+FROM employees
+WHERE salary > 50000;
+ 
+ --INSERT INTO
+ --The INSERT INTO SELECT statement copies data from one table and inserts it into another table.
+--The INSERT INTO SELECT statement requires that the data types in source and target tables match.
+INSERT INTO table2 (column1, column2, column3, ...)
+SELECT column1, column2, column3, ...
+FROM table1
+WHERE condition;
+
+--CASE 
+SELECT OrderID, Quantity,
+CASE
+    WHEN Quantity > 30 THEN 'The quantity is greater than 30'
+    WHEN Quantity = 30 THEN 'The quantity is 30'
+    ELSE 'The quantity is under 30'
+END AS QuantityText
+FROM OrderDetails;
+;  
+
+--Stored Procedures 
+CREATE PROCEDURE SelectAllCustomers @City nvarchar(30)
+AS
+SELECT * FROM Customers WHERE City = @City
+GO;
