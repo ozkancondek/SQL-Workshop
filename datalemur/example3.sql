@@ -1,1 +1,0 @@
---SQL Question 3: What is a database index, and what are the different types of indexes?
