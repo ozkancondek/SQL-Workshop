@@ -1,6 +1,6 @@
 --https://datalemur.com/questions?category=SQL
 --Histogram of Tweets 
-
+--Multi usage
 
 WITH total_tweets AS (
   SELECT 
